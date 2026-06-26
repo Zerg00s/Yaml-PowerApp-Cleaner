@@ -1,10 +1,13 @@
-<h1 align="center">Power Apps Form YAML Cleaner</h1>
-
-<p align="center">Turn the noisy YAML behind a SharePoint list-item form into clean, readable documentation.</p>
+<p align="center">
+  <img src="og-image.png" alt="Power Apps Form YAML Cleaner" width="820">
+</p>
 
 <p align="center">
   <a href="https://zerg00s.github.io/"><img src="docs/open-app.png" alt="Open the app" width="290"></a>
 </p>
+
+Turn the noisy YAML behind a SharePoint list-item form into clean, readable
+documentation.
 
 This tool is for SharePoint **list-item forms** customized with Power Apps (Canvas), not
 general Canvas Apps. It strips the cosmetic clutter (positions, colors, padding, helper
