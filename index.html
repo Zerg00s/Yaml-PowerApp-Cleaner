@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Power Apps Form YAML Cleaner</title>
+  <meta name="description" content="Paste Canvas App (Power Apps) form YAML and get cleaned, concise YAML and Markdown documentation." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧹</text></svg>" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🧹</span>
+      <div>
+        <h1>Power Apps Form YAML Cleaner</h1>
+        <p class="sub">Paste Canvas App form / data-card YAML → get concise, AI-token-friendly YAML &amp; Markdown docs.</p>
+      </div>
+    </div>
+    <div class="badge-wrap">
+      <span class="badge-label">Data source:</span>
+      <span id="sourceBadge" class="badge"></span>
+    </div>
+  </header>
+
+  <details class="filters-wrap">
+    <summary class="filters-summary">
+      <span class="chevron">▸</span> Filters &amp; options
+      <span class="filters-hint">cleaning · included fields · markdown · output</span>
+    </summary>
+    <section class="filters">
+    <div class="filters-group">
+      <strong>Cleaning</strong>
+      <label><input type="checkbox" class="opt" id="optHideCosmetic" checked /> Hide cosmetic props <span class="hint">(X, Y, colors, padding…)</span></label>
+      <label><input type="checkbox" class="opt" id="optHideJunk" checked /> Hide label / error / star controls</label>
+      <label><input type="checkbox" class="opt" id="optHidePassthrough" checked /> Hide passthrough <span class="hint">(=Parent.X / =Self.X)</span></label>
+      <label><input type="checkbox" class="opt" id="optCollapseEnums" /> Collapse long value lists <span class="hint">(hour/minute…)</span></label>
+    </div>
+    <div class="filters-group">
+      <strong>Include fields</strong>
+      <label><input type="checkbox" class="opt" id="optUpdate" checked /> Update formulas</label>
+      <label><input type="checkbox" class="opt" id="optVisible" checked /> Visible</label>
+      <label><input type="checkbox" class="opt" id="optEvents" checked /> OnSelect / OnChange events</label>
+      <label><input type="checkbox" class="opt" id="optDelayOutput" /> DelayOutput</label>
+    </div>
+    <div class="filters-group">
+      <strong>Markdown table</strong>
+      <label><input type="checkbox" class="opt" id="optMdDataSource" checked /> Show data source</label>
+      <label><input type="checkbox" class="opt" id="optMdBound" checked /> Bound column (ThisItem)</label>
+      <label><input type="checkbox" class="opt" id="optMdRequired" checked /> Required column</label>
+      <label><input type="checkbox" class="opt" id="optDiagnostics" /> Diagnostics section <span class="hint">(required / hidden / duplicate)</span></label>
+      <label><input type="checkbox" class="opt" id="optTruncate" /> Truncate long values</label>
+    </div>
+    </section>
+  </details>
+
+  <main class="workspace">
+    <section class="panel input-panel">
+      <div class="panel-head">
+        <h2>Paste YAML</h2>
+        <div class="panel-actions">
+          <button id="clearBtn" class="btn btn-ghost" type="button">Clear</button>
+        </div>
+      </div>
+      <div class="editor">
+        <pre id="inputGutter" class="gutter" aria-hidden="true"></pre>
+        <textarea id="input" spellcheck="false" autofocus placeholder="Paste the YAML you copied from Power Apps Studio here…&#10;&#10;Works with a whole Form (Form@2.4.4) or a single DataCard (TypedDataCard@1.0.7)."></textarea>
+      </div>
+      <p id="status" class="status">Paste some YAML to begin.</p>
+    </section>
+
+    <div id="splitter" class="splitter" title="Drag to resize"></div>
+
+    <section class="panel output-panel">
+      <div class="tabs">
+        <button class="tab active" data-target="paneYaml" type="button">Cleaned YAML</button>
+        <button class="tab" data-target="paneMd" type="button">Markdown Docs</button>
+        <button class="tab" data-target="paneJson" type="button">JSON</button>
+      </div>
+
+      <div id="paneYaml" class="pane active">
+        <div class="pane-head">
+          <span class="pane-title">Cleaned, copy-able YAML <span id="yamlStats" class="pane-stats"></span></span>
+          <div class="pane-head-actions">
+            <button id="dlYaml" class="btn btn-ghost" type="button">Download</button>
+            <button id="copyYaml" class="btn btn-primary" type="button">Copy</button>
+          </div>
+        </div>
+        <div class="code-view">
+          <pre id="yamlGutter" class="gutter" aria-hidden="true"></pre>
+          <pre id="yamlOut" class="output"></pre>
+        </div>
+      </div>
+
+      <div id="paneMd" class="pane">
+        <div class="pane-head">
+          <span class="pane-title">Markdown table (Cards &amp; controls) <span id="mdStats" class="pane-stats"></span></span>
+          <div class="pane-head-actions">
+            <div class="seg">
+              <button class="seg-btn active" id="mdPreviewBtn" type="button">Preview</button>
+              <button class="seg-btn" id="mdSourceBtn" type="button">Source</button>
+            </div>
+            <button id="dlMd" class="btn btn-ghost" type="button">Download</button>
+            <button id="copyMd" class="btn btn-primary" type="button">Copy</button>
+          </div>
+        </div>
+        <div id="mdPreview" class="output md-preview"></div>
+        <div id="mdSourceView" class="code-view" style="display:none">
+          <pre id="mdGutter" class="gutter" aria-hidden="true"></pre>
+          <pre id="mdOut" class="output"></pre>
+        </div>
+      </div>
+
+      <div id="paneJson" class="pane">
+        <div class="pane-head">
+          <span class="pane-title">Structured JSON <span id="jsonStats" class="pane-stats"></span></span>
+          <div class="pane-head-actions">
+            <button id="dlJson" class="btn btn-ghost" type="button">Download</button>
+            <button id="copyJson" class="btn btn-primary" type="button">Copy</button>
+          </div>
+        </div>
+        <div class="code-view">
+          <pre id="jsonGutter" class="gutter" aria-hidden="true"></pre>
+          <pre id="jsonOut" class="output"></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Runs entirely in your browser — nothing is uploaded. Host on GitHub Pages as a static site.</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

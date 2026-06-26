@@ -1,0 +1,938 @@
+- RequestForm:
+    Control: Form@2.4.4
+    Variant: Classic
+    Layout: Vertical
+    Properties:
+      DataSource: =[@'Tracker']
+      Height: =Parent.Height - RequestForm.Y
+      Item: =BrowseGallery1.Selected
+      OnSuccess: =Back()
+      Width: =Parent.Width
+      Y: =RectQuickActionBar3.Height
+    Children:
+      - Request_DataCard1:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicComboBoxEdit
+          IsLocked: true
+          Properties:
+            DataField: ="Request"
+            Default: =ThisItem.Request
+            DisplayName: =DataSourceInfo([@Tracker],DataSourceInfo.DisplayName,Request)
+            Required: =true
+            Update: =DataCardValue10.Selected
+            X: =0
+            Y: =0
+          Children:
+            - DataCardKey10:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DataCardValue10:
+                Control: Classic/ComboBox@2.4.0
+                MetadataKey: FieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  DefaultSelectedItems: =Parent.Default
+                  DisplayFields: =["Value"]
+                  DisplayMode: =Parent.DisplayMode
+                  InputTextPlaceholder: ="Please select"
+                  Items: =Choices([@Tracker].Request)
+                  PaddingBottom: =5
+                  PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                  PaddingRight: =5
+                  PaddingTop: =5
+                  SearchFields: =["Value"]
+                  SelectMultiple: =false
+                  Tooltip: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey10.Y + DataCardKey10.Height + 5
+            - ErrorMessage11:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue10.Y + DataCardValue10.Height
+            - StarVisible11:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey10.Height
+                  Text: ="*"
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey10.Y
+      - Request From_DataCard1:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicTextualEdit
+          Properties:
+            DataField: ="RequestFrom"
+            Default: =ThisItem.'Officer/Unit Drafting Request'
+            DisplayName: =DataSourceInfo([@Tracker],DataSourceInfo.DisplayName,'RequestFrom')
+            MaxLength: =DataSourceInfo([@Tracker], DataSourceInfo.MaxLength, 'RequestFrom')
+            Required: =false
+            Update: =DataCardValue2.Text
+            X: =0
+            Y: =1
+          Children:
+            - DataCardKey2:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DataCardValue2:
+                Control: Classic/TextInput@2.3.2
+                MetadataKey: FieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  Default: =Parent.Default
+                  DelayOutput: =true
+                  DisplayMode: =Parent.DisplayMode
+                  HintText: ="e.g. Thomas Broadfoot Offender Management"
+                  MaxLength: =Parent.MaxLength
+                  PaddingLeft: =5
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Tooltip: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey2.Y + DataCardKey2.Height + 5
+            - ErrorMessage2:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue2.Y + DataCardValue2.Height
+            - StarVisible2:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey2.Height
+                  Text: ="*"
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey2.Y
+      - Incident Number_DataCard1:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicTextualEdit
+          Properties:
+            DataField: ="IncidentNumber"
+            Default: |-
+              =ThisItem.'Incident # (if applicable)'
+            DisplayName: |-
+              =DataSourceInfo([@Tracker],DataSourceInfo.DisplayName,'Incident # (if applicable)')
+            MaxLength: |-
+              =DataSourceInfo([@Tracker], DataSourceInfo.MaxLength, 'Incident # (if applicable)')
+            Required: =false
+            Update: =DataCardValue7.Text
+            X: =0
+            Y: =2
+          Children:
+            - DataCardKey7:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DataCardValue7:
+                Control: Classic/TextInput@2.3.2
+                MetadataKey: FieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  Default: =Parent.Default
+                  DelayOutput: =true
+                  DisplayMode: =Parent.DisplayMode
+                  HintText: ="26-123456"
+                  MaxLength: =Parent.MaxLength
+                  PaddingLeft: =5
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Tooltip: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey7.Y + DataCardKey7.Height + 5
+            - ErrorMessage9:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue7.Y + DataCardValue7.Height
+            - StarVisible9:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey7.Height
+                  Text: ="*"
+                  Visible: =false // And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey7.Y
+      - Offender Name_DataCard2:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicTextualEdit
+          IsLocked: true
+          Properties:
+            DataField: ="Title"
+            Default: =ThisItem.'Offender Name / Date of Birth'
+            DisplayName: =DataSourceInfo([@Tracker],DataSourceInfo.DisplayName,'Offender Name / Date of Birth')
+            MaxLength: =DataSourceInfo([@Tracker], DataSourceInfo.MaxLength, 'Offender Name / Date of Birth')
+            Required: =true
+            Update: =DataCardValue18.Text
+            X: =0
+            Y: =3
+          Children:
+            - DataCardKey18:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DataCardValue18:
+                Control: Classic/TextInput@2.3.2
+                MetadataKey: FieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  Default: =Parent.Default
+                  DelayOutput: =true
+                  DisplayMode: =Parent.DisplayMode
+                  HintText: ="Thomas Broadfoot October 11th, 1982"
+                  MaxLength: =Parent.MaxLength
+                  PaddingLeft: =5
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Tooltip: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey18.Y + DataCardKey18.Height + 5
+            - ErrorMessage20:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue18.Y + DataCardValue18.Height
+            - StarVisible20:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey18.Height
+                  Text: ="*"
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey18.Y
+      - Send Notificaiton_DataCard1:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicToggleEdit
+          Properties:
+            DataField: ="SendNotificaiton"
+            Default: =ThisItem.'Send Notification'
+            DisplayName: =DataSourceInfo([@'Tracker'],DataSourceInfo.DisplayName,'Send Notification')
+            Required: =false
+            Update: =DataCardValue1.Value
+            Visible: =false
+            X: =0
+            Y: =4
+          Children:
+            - DataCardKey1:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DataCardValue1:
+                Control: Classic/Toggle@2.1.0
+                MetadataKey: FieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  Default: =true
+                  DisplayMode: =Parent.DisplayMode
+                  Tooltip: =Parent.DisplayName
+                  X: =30
+                  Y: =DataCardKey1.Y + DataCardKey1.Height + 5
+            - ErrorMessage1:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue1.Y + DataCardValue1.Height
+            - StarVisible1:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey1.Height
+                  Text: ="*"
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey1.Y
+      - Completed Date_DataCard1:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicDateTimeEdit
+          Properties:
+            DataField: ="CompletedDate"
+            Default: =ThisItem.'Completed Date'
+            DisplayName: =DataSourceInfo([@'Tracker'],DataSourceInfo.DisplayName,'Completed Date')
+            Required: =false
+            Update: =If(Not IsBlank(DateValue1.SelectedDate), DateTime(Year(DateValue1.SelectedDate), Month(DateValue1.SelectedDate), Day(DateValue1.SelectedDate), Value(HourValue1.Selected.Value), Value(MinuteValue1.Selected.Value), 0))
+            Visible: =If(IsNewRequest,false,true)
+            X: =0
+            Y: =5
+          Children:
+            - DataCardKey21:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DateValue1:
+                Control: Classic/DatePicker@2.6.0
+                MetadataKey: DateFieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  DefaultDate: =Parent.Default
+                  DisplayMode: =Parent.DisplayMode
+                  EndYear: =Year(Today())+100
+                  IconFill: =RGBA(255, 255, 255, 1)
+                  IsEditable: =true
+                  PaddingBottom: =0
+                  PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                  StartYear: =1899
+                  Tooltip: =Parent.DisplayName
+                  Width: =(Parent.Width - 60) / 2
+                  X: =30
+                  Y: =DataCardKey21.Y + DataCardKey21.Height + 5
+            - HourValue1:
+                Control: Classic/DropDown@2.3.1
+                MetadataKey: HourFieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  ChevronFill: =RGBA(255, 255, 255, 1)
+                  ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                  Default: =Text(Hour(Parent.Default),"00")
+                  DisplayMode: =Parent.DisplayMode
+                  Height: =DateValue1.Height
+                  Items: =["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                  Items.Value: =Value
+                  PaddingBottom: =5
+                  PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                  PaddingRight: =5
+                  PaddingTop: =5
+                  PressedColor: =RGBA(255, 255, 255, 1)
+                  SelectionColor: =RGBA(255, 255, 255, 1)
+                  Tooltip: =Parent.DisplayName
+                  Width: =DateValue1.Width / 2 - 10
+                  X: =DateValue1.X + DateValue1.Width + 10
+                  Y: =DateValue1.Y
+            - Separator2:
+                Control: Label@2.5.1
+                MetadataKey: HourMinuteSeparator
+                Properties:
+                  Align: =Align.Center
+                  FontWeight: =FontWeight.Bold
+                  Height: =HourValue1.Height
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Text: =":"
+                  Width: =10
+                  Wrap: =false
+                  X: =HourValue1.X + HourValue1.Width
+                  Y: =HourValue1.Y
+            - MinuteValue1:
+                Control: Classic/DropDown@2.3.1
+                MetadataKey: MinuteFieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  ChevronFill: =RGBA(255, 255, 255, 1)
+                  ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                  Default: =Text(Minute(Parent.Default),"00")
+                  DisplayMode: =Parent.DisplayMode
+                  Height: =HourValue1.Height
+                  Items: =["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                  Items.Value: =Value
+                  PaddingBottom: =5
+                  PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                  PaddingRight: =5
+                  PaddingTop: =5
+                  PressedColor: =RGBA(255, 255, 255, 1)
+                  SelectionColor: =RGBA(255, 255, 255, 1)
+                  Tooltip: =Parent.DisplayName
+                  Width: =HourValue1.Width
+                  X: =HourValue1.X + HourValue1.Width + Separator2.Width
+                  Y: =HourValue1.Y
+            - ErrorMessage17:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =HourValue1.Y + HourValue1.Height
+            - StarVisible17:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey21.Height
+                  Text: ="*"
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey21.Y
+      - Address_DataCard2:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicTextualMultilineEdit
+          Properties:
+            DataField: ="Address"
+            Default: =ThisItem.Addresses
+            DisplayName: =DataSourceInfo([@Tracker],DataSourceInfo.DisplayName,Addresses)
+            Required: =false
+            Update: =DataCardValue15.Text
+            X: =0
+            Y: =6
+          Children:
+            - DataCardKey15:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DataCardValue15:
+                Control: Classic/TextInput@2.3.2
+                MetadataKey: FieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  Default: =Parent.Default
+                  DelayOutput: =true
+                  DisplayMode: =Parent.DisplayMode
+                  Height: =140
+                  HintText: ="List all known addresses"
+                  Mode: =TextMode.MultiLine
+                  PaddingLeft: =5
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Tooltip: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey15.Y + DataCardKey15.Height + 5
+            - ErrorMessage16:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue15.Y + DataCardValue15.Height
+            - StarVisible16:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey15.Height
+                  Text: ="*"
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey15.Y
+      - Contact Information_DataCard1:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicTextualEdit
+          Properties:
+            DataField: ="ContactInformation"
+            Default: =ThisItem.'Phone Number'
+            DisplayName: =DataSourceInfo([@Tracker],DataSourceInfo.DisplayName,'ContactInformation')
+            MaxLength: =DataSourceInfo([@Tracker], DataSourceInfo.MaxLength, 'ContactInformation')
+            Required: =false
+            Update: =DataCardValue3.Text
+            X: =0
+            Y: =7
+          Children:
+            - DataCardKey3:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DataCardValue3:
+                Control: Classic/TextInput@2.3.2
+                MetadataKey: FieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  Default: =Parent.Default
+                  DelayOutput: =true
+                  DisplayMode: =Parent.DisplayMode
+                  HintText: ="Most recent number (if known)"
+                  MaxLength: =Parent.MaxLength
+                  PaddingLeft: =5
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Tooltip: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey3.Y + DataCardKey3.Height + 5
+            - ErrorMessage3:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue3.Y + DataCardValue3.Height
+            - StarVisible3:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey3.Height
+                  Text: ="*"
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey3.Y
+      - Attempts To Arrest_DataCard1:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicComboBoxEdit
+          Properties:
+            DataField: ="AttemptsToArrest"
+            Default: =ThisItem.'Attempts to Arrest Already Made'
+            DisplayName: =DataSourceInfo([@Tracker],DataSourceInfo.DisplayName,'Attempts to Arrest Already Made')
+            Required: =true
+            Update: =DataCardValue9.Selected
+            X: =0
+            Y: =8
+          Children:
+            - DataCardKey9:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DataCardValue9:
+                Control: Classic/ComboBox@2.4.0
+                MetadataKey: FieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  DefaultSelectedItems: =Parent.Default
+                  DisplayFields: =["Value"]
+                  DisplayMode: =Parent.DisplayMode
+                  InputTextPlaceholder: ="Arrest Attempted?"
+                  Items: =Choices([@Tracker].'Attempts to Arrest Already Made')
+                  PaddingBottom: =5
+                  PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                  PaddingRight: =5
+                  PaddingTop: =5
+                  SearchFields: =["Value"]
+                  SelectMultiple: =false
+                  Tooltip: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey9.Y + DataCardKey9.Height + 5
+            - ErrorMessage6:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue9.Y + DataCardValue9.Height
+            - StarVisible6:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey9.Height
+                  Text: ="*"
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey9.Y
+      - Reason For No Arrest Attempt_DataCard1:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicTextualEdit
+          Properties:
+            DataField: ="ReasonForNoArrestAttempt"
+            Default: =ThisItem.'If No, please explain why'
+            DisplayName: =DataSourceInfo([@Tracker],DataSourceInfo.DisplayName,'If No, please explain why')
+            Height: =316
+            MaxLength: =DataSourceInfo([@Tracker], DataSourceInfo.MaxLength, 'If No, please explain why')
+            Required: =DataCardValue9.Selected.Value = "No"
+            Update: =DataCardValue4.Text
+            Visible: =DataCardValue9.Selected.Value = "No"
+            X: =0
+            Y: =9
+          Children:
+            - DataCardKey4:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DataCardValue4:
+                Control: Classic/TextInput@2.3.2
+                MetadataKey: FieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  Default: =Parent.Default
+                  DelayOutput: =true
+                  DisplayMode: =Parent.DisplayMode
+                  Height: =235
+                  HintText: ="Provide a brief explanation why attempts have not been made to have the accused arrested (e.g. threats of violence, location unknown, require the seizure of evidence upon arrest etc.)"
+                  MaxLength: =Parent.MaxLength
+                  Mode: =TextMode.MultiLine
+                  PaddingLeft: =5
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Tooltip: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey4.Y + DataCardKey4.Height + 5
+            - ErrorMessage4:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue4.Y + DataCardValue4.Height
+            - StarVisible4:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey4.Height
+                  Text: ="*"
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey4.Y
+      - Attachments_DataCard1:
+          Control: TypedDataCard@1.0.7
+          Variant: ClassicAttachmentsEdit
+          Properties:
+            DataField: ="{Attachments}"
+            Default: =ThisItem.Attachments
+            DisplayName: =DataSourceInfo([@'Tracker'],DataSourceInfo.DisplayName,Attachments)
+            Height: =518
+            Required: =false
+            Update: =DataCardValue19.Attachments
+            X: =0
+            Y: =10
+          Children:
+            - DataCardKey19:
+                Control: Label@2.5.1
+                MetadataKey: FieldName
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =48
+                  Text: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+            - DataCardValue19:
+                Control: Attachments@2.3.0
+                MetadataKey: FieldValue
+                Properties:
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  DisplayMode: =Parent.DisplayMode
+                  Height: =300
+                  ItemColor: =RGBA(255, 255, 255, 1)
+                  Items: =Parent.Default
+                  PaddingBottom: =5
+                  PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                  PaddingRight: =5
+                  PaddingTop: =5
+                  PressedColor: =RGBA(255, 255, 255, 1)
+                  Tooltip: =Parent.DisplayName
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey19.Y + DataCardKey19.Height + 5
+            - ErrorMessage15:
+                Control: Label@2.5.1
+                MetadataKey: ErrorMessage
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(168, 0, 0, 1)
+                  FontWeight: =FontWeight.Semibold
+                  Height: =10
+                  Live: =Live.Assertive
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =24
+                  Text: =Parent.Error
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue19.Y + DataCardValue19.Height
+            - StarVisible15:
+                Control: Label@2.5.1
+                MetadataKey: FieldRequired
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =App.Theme.Colors.Darker30
+                  Height: =DataCardKey19.Height
+                  Text: ="*"
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey19.Y
+            - Button1:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Color: =RGBA(255, 255, 255, 1)
+                  Height: =83
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  OnSelect: =SubmitForm(RequestForm)
+                  Text: ="Submit"
+                  Width: =300
+                  X: =170
+                  Y: =398
