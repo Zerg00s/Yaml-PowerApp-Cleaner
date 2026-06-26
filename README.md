@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://zerg00s.github.io/"><img src="docs/open-app.png" alt="Open the app" width="290"></a>
+  <a href="https://zerg00s.github.io/Yaml-PowerApp-Cleaner/"><img src="docs/open-app.png" alt="Open the app" width="290"></a>
 </p>
 
 Turn the noisy YAML behind a SharePoint list-item form into clean, readable
