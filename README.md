@@ -1,64 +1,37 @@
-# Power Apps Form YAML Cleaner
+<h1 align="center">Power Apps Form YAML Cleaner</h1>
 
-A single-page app that turns the verbose YAML you copy out of **Power Apps Studio**
-(Canvas App forms) into two concise, copy-able outputs:
+<p align="center">Turn the noisy YAML behind a SharePoint list-item form into clean, readable documentation.</p>
 
-1. **Cleaned YAML** — only the functional bits (Visible, Update, Items, Default,
-   DefaultSelectedItems, Required, DisplayMode, OnSelect/OnChange, control names &
-   types, card names, DataField, ValidationState, etc.). All the cosmetic junk — X, Y,
-   Width, Height, colors, padding, borders, fonts — and the helper label/error/star
-   controls are stripped out.
-2. **Markdown docs** — a table of every data card and its input control(s): card
-   name, field, the bound SharePoint column, control type, Required, Visible, and the
-   non-default functional properties of each control. Buttons are listed in their own
-   table (with the data card they belong to). An optional **Diagnostics** section
-   surfaces required fields, hidden/conditionally-visible cards, and ⚠️ duplicate field
-   bindings.
-3. **JSON** — the same structure as machine-readable JSON (often the most
-   token-efficient format to feed a model).
+<p align="center">
+  <a href="https://zerg00s.github.io/"><img src="docs/open-app.png" alt="Open the app" width="290"></a>
+</p>
 
-Each output tab shows a live **char / token / reduction** stat so you can see how much
-context you're saving. **Copy** and **Download** buttons are on every tab. Your filter
-choices and last input are remembered between visits (localStorage). Drag the divider
-between the panes to resize (double-click to reset).
+This tool is for SharePoint **list-item forms** customized with Power Apps (Canvas), not
+general Canvas Apps. It strips the cosmetic clutter (positions, colors, padding, helper
+labels) and keeps only what matters: fields, controls, defaults, rules, and your
+SharePoint data source. You get back tidy YAML, a Markdown table, and JSON. Great for
+documentation, and a compact way to feed a form to an AI without wasting tokens.
 
-The goal is quick documentation of how a SharePoint list form was customized — and a
-compact, precise format to feed AI models as context without burning tokens.
+## How to use it
 
-## Use it
+1. In Power Apps Studio, open the **Tree view**, right-click your form, and choose
+   **View code**.
 
-Just open `index.html`. Paste YAML into the left box; the right side updates live.
-You can paste either:
+   ![View code in Power Apps Studio](docs/view-code.png)
 
-- a **whole Form** (`Control: Form@2.4.4`) — the SharePoint list (data source) is
-  shown at the top, or
-- a **single DataCard** (`Control: TypedDataCard@1.0.7`).
+2. Copy the YAML, then paste it into the box on the left of the site.
 
-Use the checkboxes at the top to control what the cleaned YAML and Markdown contain.
+3. Read or copy the result on the right: **Cleaned YAML**, **Markdown Docs**, or **JSON**.
 
-Everything runs in your browser — nothing is uploaded.
+   ![Cleaned output on the right](docs/output.png)
 
-## Host on GitHub Pages
+That's the whole flow. Paste a whole form or just a single data card, both work.
 
-1. Put `index.html`, `app.js`, and `styles.css` in a repo (root or `/docs`).
-2. Repo **Settings → Pages → Build and deployment**: Source = *Deploy from a branch*,
-   pick your branch and the folder (`/root` or `/docs`).
-3. Open the published URL. That's it — it's a static site, no build step.
+## Good to know
 
-## Files
+Everything runs in your browser. Nothing is uploaded.
 
-| File | Purpose |
-|------|---------|
-| `index.html` | Page markup, filter checkboxes, two output tabs |
-| `app.js` | YAML parser + cleaner + Markdown generator + UI wiring |
-| `styles.css` | Dark, two-pane layout |
+Use the **Filters & options** bar to tweak what the output includes (events, Visible,
+diagnostics, and more).
 
-## Notes on the YAML
-
-- The samples are **Classic** controls (`Classic/ComboBox`, `Classic/TextInput`,
-  `Classic/DatePicker`, `Classic/DropDown`, `Classic/Toggle`, `Attachments`) inside
-  `TypedDataCard` cards. Modern controls (no `Classic/` prefix) are handled the same
-  way — the parser keys off the control's `MetadataKey`/type, not the version string.
-- A card's human label is recovered by stripping the `_DataCardN` suffix from its
-  control name; the bound column is read from `Default: =ThisItem.<column>`.
-- The parser understands YAML block scalars (`|-`) used for multi-line formulas.
+Built by [Denis Molodtsov](https://spdenis.com/).
