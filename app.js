@@ -148,6 +148,17 @@ function normalizeNode(entry) {
   if (Array.isArray(b.Children)) {
     node.children = b.Children.map(normalizeNode).filter(Boolean);
   }
+  // Also descend into named-map nesting (e.g. `Screens: { EditScreen: {...} }`)
+  // where children are expressed as named sub-maps instead of a Children list.
+  const RESERVED = new Set(['Control', 'Variant', 'Layout', 'IsLocked', 'MetadataKey', 'Properties', 'Children']);
+  for (const k of Object.keys(b)) {
+    if (RESERVED.has(k)) continue;
+    const v = b[k];
+    if (v && typeof v === 'object' && !Array.isArray(v)) {
+      const child = normalizeNode({ [k]: v });
+      if (child) node.children.push(child);
+    }
+  }
   return node;
 }
 
@@ -406,7 +417,13 @@ function serializeNode(node, dashIndent, lines, opts) {
 }
 
 function buildCleanedYaml(nodes, opts) {
-  const cleaned = nodes.map((n) => cleanNode(n, opts));
+  // Focus on the forms and standalone cards we found, so pasting a whole screen
+  // yields the cleaned form (not the screen chrome). Fall back to the raw nodes
+  // if nothing form-like is present.
+  const forms = collectForms(nodes);
+  const standalone = collectStandaloneCards(nodes);
+  const targets = forms.length || standalone.length ? [...forms, ...standalone] : nodes;
+  const cleaned = targets.map((n) => cleanNode(n, opts));
   const lines = [];
   for (const n of cleaned) serializeNode(n, 0, lines, opts);
   return lines.join('\n').replace(/\n{3,}/g, '\n\n') + '\n';
